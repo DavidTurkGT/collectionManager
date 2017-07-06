@@ -1,1 +1,49 @@
-<p>Index file is loaded!</p>
+<div class="container">
+
+  <div class="add_book">
+    <form class="book_form" action="/add/book" method="post">
+      <legend>Add a Book</legend>
+      <input type="text" name="title" value="" placeholder="Book Title"><br>
+      <input type="number" name="isbn" value="" placeholder = "ISBN Number"><br>
+      <input type="number" name="length" value="" placeholder="Number of Pages">
+      <label for="haveRead">Have you read this book?</label><br>
+      <select class="haveRead" name="haveRead">
+        <option value="" selected disabled>Choose One</option>
+        <option value="true">Read</option>
+        <option value="false">Not Read</option>
+      </select><br>
+      <label for="author">Author</label><br>
+      <select class="authorSelection" name="author">
+        <option value="" selected disabled>Choose One</option>
+        <option value="author1">Author #1</option>
+        <option value="author2">Author #2</option>
+        <option value="author3">Author #3</option>
+      </select><br>
+      <button type="submit">Add to Library</button>
+    </form>
+
+  </div>
+
+  <div class="add_author">
+    <form class="author_form" action="/add/authro" method="post">
+      <legend>Add an Author</legend><br>
+      <fieldset>
+        <legend>Name</legend>
+        <input type="text" name="firstname" value="" placeholder="First Name"><br>
+        <input type="text" name="lastname" value="" placeholder="Last Name"><br>
+      </fieldset>
+      <fieldset>
+        <legend>Address (Optional)</legend>
+        <input type="text" name="street" value="" placeholder="Street Address"><br>
+        <input type="text" name="city" value="" placeholder="City"><br>
+        <input type="number" name="zip" value="" placeholder="ZIP code"><br>
+      </fieldset>
+      <button type="submit">Add Author</button>
+    </form>
+  </div>
+
+  <div class="library">
+    <p>This will be your library</p>
+  </div>
+
+</div>
