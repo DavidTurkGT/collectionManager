@@ -2,6 +2,13 @@ const express = require('express');
 const router  = express.Router();
 ////////////////////////////////////////////////////////////////////////////////
 //Support Functions
+function validateAuthor(req){
+  req.checkBody('firstname', "Please enter a first name for the author").notEmpty();
+  req.checkBody('lastname', 'Please enter a last name for the author').notEmpty();
+
+  return req.validationErrors();
+};
+
 function buildAuthor(data){
   return newAuthor = {
     name: {
@@ -14,7 +21,15 @@ function buildAuthor(data){
       zip: data.zip
     }
   }
-}
+};
+
+function validateBook(req){
+  req.checkBody('title','Please enter a book title').notEmpty();
+  req.checkBody('length','Please provide the length of the book').notEmpty();
+  req.checkBody('haveRead','Please indicate whether you have read the book').notEmpty();
+
+  return req.validationErrors();
+};
 
 function buildBook(data){
   return newBook = {
@@ -24,8 +39,15 @@ function buildBook(data){
     haveRead: data.haveRead ? true : false,
     author: data.author
   }
+};
+
+function renderErrors(errors, res){
+  let errorMessages = [];
+  errors.forEach( (err) => errorMessages.push(err.msg) );
+  res.render("index", {errors: errorMessages});
 }
 
+////////////////////////////////////////////////////////////////////////////////
 router.get("/", (req, res) => {
   res.render("index");
 });
@@ -33,16 +55,20 @@ router.get("/", (req, res) => {
 router.post("/add/:item", (req, res) => {
   switch (req.params.item){
     case "book":
-      console.log("Adding a book!");
-      let newBook = buildBook(req.body);
-      console.log("New book created: ", newBook);
-      res.redirect("/");
+      var errors = validateBook(req);
+      if(errors) renderErrors(errors, res);
+      else{
+        let newBook = buildBook(req.body);
+        res.redirect("/");
+      }
       break;
     case "author":
-      console.log("Form received.  Adding author");
-      let newAuthor = buildAuthor(req.body);
-      console.log("Author created: ", newAuthor);
-      res.redirect("/");
+      var errors = validateAuthor(req);
+      if(errors) renderErrors(errors, res);
+      else{
+        let newAuthor = buildAuthor(req.body);
+        res.redirect("/");
+      }
       break;
     default:
       res.redirect("/");
