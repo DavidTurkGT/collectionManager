@@ -2,6 +2,7 @@ const express         = require('express');
 const mustacheExpress = require("mustache-express");
 const routes          = require('./routes/router.js');
 const path            = require('path');
+const bodyParser     = require('body-parser');
 ////////////////////////////////////////////////////////////////////////////////
 const app = express ();
 app.set('port' , (process.env.PORT || 3000));
@@ -15,7 +16,10 @@ app.set('view engine', 'mustache');
 
 app.set('layout','layout');
 
-app.use(routes)
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+app.use(routes);
 ////////////////////////////////////////////////////////////////////////////////
 app.listen(app.get('port'), () => {
   console.log("App running on port ", app.get('port'));
