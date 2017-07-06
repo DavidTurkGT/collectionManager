@@ -16,6 +16,16 @@ function buildAuthor(data){
   }
 }
 
+function buildBook(data){
+  return newBook = {
+    title: data.title,
+    isbnNumber: data.isbn,
+    length: data.length,
+    haveRead: data.haveRead ? true : false,
+    author: data.author
+  }
+}
+
 router.get("/", (req, res) => {
   res.render("index");
 });
@@ -24,13 +34,7 @@ router.post("/add/:item", (req, res) => {
   switch (req.params.item){
     case "book":
       console.log("Adding a book!");
-      let newBook = {
-        title: req.body.title,
-        isbnNumber: req.body.isbn,
-        length: req.body.length,
-        haveRead: req.body.haveRead ? true : false,
-        author: req.body.author
-      }
+      let newBook = buildBook(req.body);
       console.log("New book created: ", newBook);
       res.redirect("/");
       break;
