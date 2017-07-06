@@ -10,7 +10,7 @@ const bookSchema = new Schema({
     title: {type: String, trim: true},
     length: Number
   }],
-  haveRead: { type: Boolean, require: true},
+  haveRead: { type: Boolean, required: true},
   author: {
     name: {
       fullname: String,
@@ -20,6 +20,7 @@ const bookSchema = new Schema({
     address: {
       street: String,
       city: String,
+      state: String,
       zip: Number
     }
   }

@@ -9,6 +9,7 @@ const authorSchema = new Schema({
   address: {
     street: String,
     city: String,
+    state: String,
     zip: Number
   }
 });

@@ -10,17 +10,29 @@ function validateAuthor(req){
 };
 
 function buildAuthor(data){
-  return newAuthor = {
+  let newAuthor = {
     name: {
       firstname: data.firstname,
       lastname: data.lastname
-    },
-    address: {
-      street: data.street,
-      city: data.city,
-      zip: data.zip
     }
   }
+  if(data.street){
+    newAuthor.address = {};
+    newAuthor.adreess.street = data.street;
+  }
+  if(data.city){
+    newAuthor.address = newAuthor.address || {};
+    newAuthor.address.city = data.city;
+  }
+  if(data.state){
+    newAuthor.address = newAuthor.address || {};
+    newAuthor.address.state = data.state;
+  }
+  if(data.zip){
+    newAuthor.address = newAuthor.address || {};
+    newAuthor.address.zip = data.zip;
+  }
+  return newAuthor
 };
 
 function validateBook(req){
@@ -32,12 +44,14 @@ function validateBook(req){
 };
 
 function buildBook(data){
-  return newBook = {
+  let newBook = {
     title: data.title,
-    isbnNumber: data.isbn,
-    length: data.length,
+    length: Number(data.length),
     haveRead: data.haveRead ? true : false,
     author: data.author
+  }
+  if(data.isbn){
+    newBook.isbnNumber = Number(data.isbn)
   }
 };
 
@@ -59,6 +73,7 @@ router.post("/add/:item", (req, res) => {
       if(errors) renderErrors(errors, res);
       else{
         let newBook = buildBook(req.body);
+        console.log("Book created: ", newBook);
         res.redirect("/");
       }
       break;
@@ -67,6 +82,7 @@ router.post("/add/:item", (req, res) => {
       if(errors) renderErrors(errors, res);
       else{
         let newAuthor = buildAuthor(req.body);
+        console.log("Author created: ", newAuthor);
         res.redirect("/");
       }
       break;
