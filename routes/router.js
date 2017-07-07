@@ -119,7 +119,6 @@ const Book = mongoose.model("Book", bookSchema);
 ////////////////////////////////////////////////////////////////////////////////
 //Middleware
 function getAuthors (req, res, next){
-  console.log("Finding authors");
   Author.find().then( (authors) => {
     authorsList = authors;
     next();
@@ -128,18 +127,14 @@ function getAuthors (req, res, next){
 };
 
 function getBooks (req, res, next) {
-  console.log("Finding books");
   Book.find().then( (books) => {
-    console.log("Books found: ", books);
     booksList = books;
     next();
   })
 }
 
 function getAuthor (req, res, next){
-  console.log("Getting book author...");
   Author.findById(req.body.author).then( (author) => {
-    console.log("The author of the book is: ", author);
     bookAuthor = author;
     next();
   });
@@ -152,13 +147,10 @@ router.get("/", getAuthors, getBooks, (req, res) => {
 router.post("/add/:item", getAuthor, (req, res) => {
   switch (req.params.item){
     case "book":
-      console.log("Creating a book!");
-      console.log("The author of this book is: ", bookAuthor.fullName);
       var errors = validateBook(req);
       if(errors) renderErrors(errors, res);
       else{
         let newBook = new Book(buildBook(req.body, bookAuthor));
-        console.log("Book created: ", newBook);
         newBook.save().then( (newBook) => {
           res.redirect("/");
         });
@@ -169,7 +161,6 @@ router.post("/add/:item", getAuthor, (req, res) => {
       if(errors) renderErrors(errors, res);
       else{
         let newAuthor = new Author(buildAuthor(req.body));
-        console.log("Author created: ", newAuthor);
         newAuthor.save().then( (newAuthor) => {
           res.redirect("/");
         });
@@ -183,7 +174,6 @@ router.post("/add/:item", getAuthor, (req, res) => {
 
 router.post("/book/update/:id", getAuthors, (req, res) => {
   Book.findById(req.params.id).then( (Book) =>{
-    console.log("Book to update: ", Book);
     res.render("update", {book: Book, authors: authorsList});
   });
 });
@@ -201,9 +191,14 @@ router.post("/book/update/:id/done", getAuthor, (req, res) => {
       }
     }
   ).then( (book) => {
-    console.log("The book is now: ", book);
     res.redirect("/");
   });
+});
+
+router.post("/book/delete/:bookId", (req, res) => {
+  Book.find( { "_id": req.params.bookId}).remove().then( (book) => {
+    res.redirect("/");
+  })
 });
 ////////////////////////////////////////////////////////////////////////////////
 module.exports = router;
