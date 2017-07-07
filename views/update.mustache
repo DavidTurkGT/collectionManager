@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Update a book</title>
+  </head>
+  <body>
+    <h1>Book to update</h1>
+    {{#book}}
+    <form action="/book/update/{{id}}/done" method="post">
+      <input type="text" name="title" value="{{title}}">
+      <input type="number" name="isbn" value={{isbnNumber}}>
+      <input type="number" name="length" value={{length}}>
+      <select name="haveRead">
+        <option value=1 {{#haveRead}}selected{{/haveRead}}>Read</option>
+        <option value=0 {{^haveRead}}selected{{/haveRead}}>Not Read</option>
+      </select>
+      <select class="authorSelection" name="author">
+        <option value="" selected disabled>Choose One</option>
+        {{#authors}}
+        <option value={{id}}>{{fullName}}</option>
+        {{/authors}}
+      </select><br>
+      <button type="submit">Update</button>
+    </form>
+    {{/book}}
+  </body>
+</html>

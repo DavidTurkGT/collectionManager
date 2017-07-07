@@ -15,9 +15,9 @@
       <label for="author">Author</label><br>
       <select class="authorSelection" name="author">
         <option value="" selected disabled>Choose One</option>
-        <option value="author1">Author #1</option>
-        <option value="author2">Author #2</option>
-        <option value="author3">Author #3</option>
+        {{#authors}}
+        <option value={{id}}>{{fullName}}</option>
+        {{/authors}}
       </select><br>
       <button type="submit">Add to Library</button>
     </form>
@@ -44,7 +44,16 @@
   </div>
 
   <div class="library">
-    <p>This will be your library</p>
+    <ul>
+      {{#books}}
+      <li>
+        {{title}} by {{author.name.firstname}} {{author.name.lastname}}
+        <form action="/book/update/{{id}}" method="post">
+          <button type="submit">Update</button>
+        </form>
+      </li>
+      {{/books}}
+    </ul>
   </div>
 
 </div>
